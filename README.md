@@ -4,7 +4,7 @@ A simple command-line todo list application written in C. The tasks are saved in
 
 ---
 
-The tasks are saved to a file called `todo.txt` by default if the user doesn't include the file name as a command-line argument.
+The tasks are saved to a file called `todo.tsv` by default if the user doesn't include the file name as a command-line argument.
 
 If the user includes a file name as a command-line argument, then tasks will be saved to it and other functions/commands can be used on it.
 
@@ -20,12 +20,12 @@ This adds a task to the file.
 
 ### Usage:
 
-`./todo add "Go to the grocery store"` (todo.txt)
+`./todo add "Go to the grocery store"` `(todo.tsv)`
 #### Or with a custom file:
-`./todo add "Go to the grocery store" tasks.txt`
+`./todo add "Go to the grocery store" tasks.tsv`
 ## "list":
-This lists all the tasks in the file. <br>
+This lists all the tasks in the file.
 ### Usage:
-`./todo list` (todo.txt)
+`./todo list` `(todo.txt)`
 #### Or with a custom file:
-`./todo list tasks.txt`
+`./todo list tasks.tsv`
