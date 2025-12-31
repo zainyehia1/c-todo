@@ -12,18 +12,22 @@ If the user includes a file name as a command-line argument, then tasks will be 
 
 # The Commands
 
-
 ## "add":
-
-This adds a task to the file.
-
+Adds a task to the file.
 ### Usage:
-
 `./todo add "Go to the grocery store"` `(todo.tsv)`
 #### Or with a custom file:
 `./todo add "Go to the grocery store" tasks.tsv`
+
 ## "list":
-This lists all the tasks in the file.
+Lists all the tasks in the file.
+### Usage:
+`./todo list` `(todo.txt)`
+#### Or with a custom file:
+`./todo list tasks.tsv`
+
+## "remove":
+Removes a task from the file.
 ### Usage:
 `./todo list` `(todo.txt)`
 #### Or with a custom file:
