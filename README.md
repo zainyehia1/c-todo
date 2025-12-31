@@ -12,7 +12,6 @@ If the user includes a file name as a command-line argument, then tasks will be 
 
 # The Commands
 
----
 
 ## "add":
 
