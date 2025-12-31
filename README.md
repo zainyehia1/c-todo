@@ -22,13 +22,20 @@ Adds a task to the file.
 ## "list":
 Lists all the tasks in the file.
 ### Usage:
-`./todo list` `(todo.txt)`
+`./todo list` `(todo.tsv)`
 #### Or with a custom file:
 `./todo list tasks.tsv`
 
 ## "remove":
 Removes a task from the file.
 ### Usage:
-`./todo list` `(todo.txt)`
+`./todo remove [Task-ID]` `(todo.tsv)`
 #### Or with a custom file:
-`./todo list tasks.tsv`
+`./todo remove [Task-ID] tasks.tsv`
+
+## "clear":
+Lists all the tasks in the file.
+### Usage:
+`./todo clear` `(todo.tsv)`
+#### Or with a custom file:
+`./todo clear tasks.tsv`
