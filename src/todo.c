@@ -22,27 +22,40 @@ int next_id(char *filename) {
     FILE *file = fopen(filename, "r");
     if (file == NULL) {
         id = 1;
+        return 1;
     }
     else {
         int count = 0;
         char line [256];
+        fgets(line, sizeof(line), file); // Skip header
         while (fgets(line, sizeof(line), file) != NULL) {
             count++;
         }
         fclose(file);
-        id = count;
+        id = count + 1;
     }
     return id;
 }
 
 // Add command:
 int add_task(char *description, char *filename) {
-    int id = next_id(filename);
+    const int id = next_id(filename);
 
-    FILE *file = fopen(filename, "a");
+    // Check if file has headers
+    int has_header = 0;
+    FILE *file = fopen(filename, "r");
+    if (file != NULL) {
+        char line [256];
+        if (fgets(line, sizeof(line), file) != NULL) {
+            has_header = 1;
+        }
+        fclose(file);
+    }
+
+    file = fopen(filename, "a");
     if (file != NULL) {
         // If file is empty, add headers
-        if (id == 1) {
+        if (!has_header) {
             fprintf(file,"Task Number\tTask Description\n");
         }
         fprintf(file,"%i\t%s\n", id, description);
@@ -166,6 +179,7 @@ int main(int argc, char *argv[]) {
         printf("The only valid commands are: \"add\", \"list\", \"done\", and \"remove\"\n");
         return 2;
     }
+
     if (argc == 2) {
         if (strcmp(argv[1], "list") == 0) {
             list_tasks("todo.tsv");
