@@ -2,13 +2,49 @@
 #include <stdlib.h>
 #include <string.h>
 
+// Task struct (will be used later)
+typedef struct {
+    int id;
+    char *description;
+} Task;
+
+// Each file can only have a maximum of 50 tasks (used later)
+#define MAX_TASKS 50
+Task tasks[MAX_TASKS];
+
 // Functions for every command
+// next_id helper function
+int next_id(char *filename) {
+    int id;
+
+    FILE *file = fopen(filename, "r");
+    if (file == NULL) {
+        id = 1;
+    }
+    else {
+        int count = 0;
+        char line [256];
+        while (fgets(line, sizeof(line), file) != NULL) {
+            count++;
+        }
+        fclose(file);
+        id = count;
+    }
+    return id;
+}
 
 // Add command:
-int add_task(char *task, char *filename) {
+int add_task(char *description, char *filename) {
+    int id = next_id(filename);
+
     FILE *file = fopen(filename, "a");
     if (file != NULL) {
-        fprintf(file,"%s\n", task);
+        // if file is empty, add headers
+        if (id == 1) {
+            fprintf(file,"Task Number\tTask Description\n");
+        }
+        fprintf(file,"%i\t%s\n", id, description);
+        fclose(file);
         return 0;
     }
     else {
@@ -38,7 +74,7 @@ int list_tasks(char *filename) {
 
 int main(int argc, char *argv[]) {
     if (argc < 2) {
-        printf("Usage: ./todo [command] {Description if available for command} (File name unless default [todos.txt])\n");
+        printf("Usage: ./todo [command] {Description if available for command} (File name unless default [todo.tsv])\n");
         return 1;
     }
 
@@ -49,13 +85,13 @@ int main(int argc, char *argv[]) {
     }
     if (argc == 2) {
         if (strcmp(argv[1], "list") == 0) {
-            list_tasks("todo.txt");
+            list_tasks("todo.tsv");
         }
     }
 
     else if (argc == 3) {
         if (strcmp(argv[1], "add") == 0) {
-            add_task(argv[2], "todo.txt");
+            add_task(argv[2], "todo.tsv");
         }
 
         if (strcmp(argv[1], "list") == 0) {
