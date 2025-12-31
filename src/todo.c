@@ -68,7 +68,6 @@ int add_task(char *description, char *filename) {
     }
 }
 
-// List command
 // Store the tasks into the "tasks" array using the helper function "store_tasks"
 void store_tasks(char *filename) {
     FILE *file = fopen(filename, "r");
@@ -103,6 +102,7 @@ void free_tasks() {
     }
 }
 
+// List command
 void list_tasks(char *filename) {
     store_tasks(filename);
 
@@ -119,6 +119,7 @@ void list_tasks(char *filename) {
     }
 }
 
+// Save the tasks into the file after removal
 int save_tasks(char *filename) {
     FILE *file = fopen(filename, "w");
     if (file == NULL) {
@@ -134,8 +135,8 @@ int save_tasks(char *filename) {
     return 0;
 }
 
+// Remove a task from the file
 int remove_task(int id, char *filename) {
-
     // Load tasks
     store_tasks(filename);
 
@@ -162,10 +163,26 @@ int remove_task(int id, char *filename) {
         tasks[i].id = i + 1;
     }
 
+    printf("Task number %d has been deleted successfully!\n", id);
     // Save to the file again
     save_tasks(filename);
 
     return 0;
+}
+
+// Clear all tasks from the file
+int clear_tasks(char *filename) {
+    FILE *file = fopen(filename, "w");
+    if (file != NULL) {
+        fprintf(file, "Task Number\tTask Description\n");
+        fclose(file);
+        printf("All tasks have been cleared successfully from file %s\n", filename);
+        return 0;
+    }
+    else {
+        printf("Error writing to file! Terminating...\n");
+        return 1;
+    }
 }
 
 int main(int argc, char *argv[]) {
@@ -174,15 +191,18 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    if (strcmp(argv[1], "add") != 0 && strcmp(argv[1], "list") != 0 && strcmp(argv[1], "done") != 0 && strcmp(argv[1], "remove") != 0) {
+    if (strcmp(argv[1], "add") != 0 && strcmp(argv[1], "list") != 0 && strcmp(argv[1], "done") != 0 && strcmp(argv[1], "clear") != 0 && strcmp(argv[1], "remove") != 0) {
         printf("\"%s\" is not a valid command!\n", argv[1]);
-        printf("The only valid commands are: \"add\", \"list\", \"done\", and \"remove\"\n");
+        printf("The only valid commands are: \"add\", \"list\", \"clear\", and \"remove\"\n");
         return 2;
     }
 
     if (argc == 2) {
         if (strcmp(argv[1], "list") == 0) {
             list_tasks("todo.tsv");
+        }
+        else if (strcmp(argv[1], "clear") == 0) {
+            clear_tasks("todo.tsv");
         }
     }
 
@@ -197,6 +217,10 @@ int main(int argc, char *argv[]) {
 
         else if (strcmp(argv[1], "remove") == 0) {
             remove_task(atoi(argv[2]), "todo.tsv");
+        }
+
+        else if (strcmp(argv[1], "clear") == 0) {
+            clear_tasks(argv[2]);
         }
     }
     else if (argc == 4) {
